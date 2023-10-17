@@ -1,4 +1,5 @@
 #include <iostream>
+#include <array>
 
 using namespace std;
 
@@ -39,3 +40,32 @@ static constexpr size_t index_of_v = index_of<0, T, Args...>::value;
 
 template<typename T, typename... Args>
 static constexpr bool is_one_of_v = index_of_v<T, Args...> != -1;
+
+template<typename... Types>
+using voided_t = void;
+
+template<typename T>
+using identity = T;
+
+template<typename T, typename = void>
+struct add_lvalue_ref {
+    using type = T;
+};
+
+template<typename T>
+struct add_lvalue_ref<T, voided_t<T&>> {
+    using type = T&;
+};
+
+template<typename T>
+using add_lvalue_ref_t = typename add_lvalue_ref<T>::type;
+
+template <typename... Args>
+struct TemplateFinder {
+    template<typename Target>
+    static constexpr bool exists() {
+        // Would be better to use typeid(Args).name()
+        array<size_t, sizeof...(Args)> hashes = {typeid(Args).hash_code()...};
+        return std::find(hashes.begin(), hashes.end(), typeid(Target).hash_code()) != hashes.end();
+    }
+};
