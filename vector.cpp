@@ -14,7 +14,7 @@ struct Vector {
     Vector(): arr_(initial_arr_), capacity_(initial_capacity_), size_(0) {
     }
 
-    Vector(size_t n, T t): capacity_(next_size(n)), arr_(new uint8_t[next_size(n) * sizeof(T)]), size_(0) {
+    Vector(size_t n, T t): capacity_(next_size(n)), arr_(n <= initial_capacity_ ? initial_arr_ : new uint8_t[next_size(n) * sizeof(T)]), size_(0) {
         for (int i = 0; i < n; i++) {
             new(arr_ + size_++ * sizeof(T)) T(t);
         }
@@ -88,10 +88,7 @@ struct Widget {
 };
 
 int main() {
-    vector<Widget> v = {};
-    for (int i = 0; i < 18; i++ ) {
-        v.push_back(Widget{i, 2});
-    }
+    vector<Widget> v(10, Widget{32, 2});
 
     cout << v[3].x;
 
