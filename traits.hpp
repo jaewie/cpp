@@ -1,5 +1,8 @@
 #include <iostream>
 #include <array>
+#include <cmath>
+#include "math.h"
+#include <vector>
 
 using namespace std;
 
