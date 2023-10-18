@@ -63,6 +63,12 @@ struct add_lvalue_ref<T, voided_t<T&>> {
 template<typename T>
 using add_lvalue_ref_t = typename add_lvalue_ref<T>::type;
 
+template<typename T>
+concept Hashable = requires (T x) {
+    { std::hash<T>{}(x) } -> std::convertible_to<size_t>;
+};
+
+
 template <typename... Args>
 struct TemplateFinder {
     template<typename Target>
